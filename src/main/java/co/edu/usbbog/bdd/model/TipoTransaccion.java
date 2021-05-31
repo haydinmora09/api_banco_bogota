@@ -1,26 +1,21 @@
 package co.edu.usbbog.bdd.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-
 @Entity
-public class Ciudad {
-
+public class TipoTransaccion {
 	@Id
 	private long id;
-	@Column
 	private String nombre;
 	
-	
-	public Ciudad(long id, String nombre) {
+	public TipoTransaccion(long id, String nombre) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 	}
 	
-	public Ciudad() {
+	public TipoTransaccion() {
 		super();
 		this.id = 0;
 		this.nombre = "";
@@ -59,7 +54,7 @@ public class Ciudad {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Ciudad other = (Ciudad) obj;
+		TipoTransaccion other = (TipoTransaccion) obj;
 		if (id != other.id)
 			return false;
 		if (nombre == null) {
@@ -72,6 +67,8 @@ public class Ciudad {
 
 	@Override
 	public String toString() {
-		return "Ciudad [id=" + id + ", nombre=" + nombre + "]";
+		return "TipoTransaccion [id=" + id + ", nombre=" + nombre + "]";
 	}
+
+	
 }
