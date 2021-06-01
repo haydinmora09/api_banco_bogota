@@ -59,7 +59,7 @@ public class CuentaController {
 	}
 	
 	@GetMapping("/count")
-	public long coundCuenta() {
+	public long contarCuenta() {
 		long c =  cmet.count();
 		try {
 		if (c != 0) {
@@ -72,7 +72,7 @@ public class CuentaController {
 		}
 	}
 	@DeleteMapping("/eliminar")
-	public String eliminarCiudad(@RequestBody Cuenta cuenta) {
+	public String eliminarCuenta(@RequestBody Cuenta cuenta) {
 		try {
 			if (cmet.existsById(cuenta.getNum())) {
 				cmet.deleteById(cuenta.getNum());
