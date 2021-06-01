@@ -50,15 +50,17 @@ public class CiudadController {
 		
 	}
 	
-	@GetMapping("/buscarC")
-	public Optional<Ciudad> buscarCiudad(@PathVariable("id") long id) {
-		Optional<Ciudad> cm =  cmet.findById(id);
-		if (!cmet.equals(null)) {
-			return cm;
+	@GetMapping("/find")
+	public Optional<Ciudad> findCiudad(@PathVariable("id") long id) {
+		Optional<Ciudad> ci = cmet.findById(id);
+		if (ci.equals(null)) {
+			throw new RuntimeException("Ciudad identificada con el ID: "+id+" no encontrado");
 		} else {
-			throw new RuntimeException("Ciudad no encontrada");
+			
+			return ci;
 		}
 	}
+	
 	
 	@GetMapping("/count")
 	public long contarCiudades() {
