@@ -48,13 +48,13 @@ public class CuentaController {
 		}
 	}
 	
-	@GetMapping("/find/{id}")
-	public Optional<Cuenta> findCuenta(@PathVariable("id") long id) {
-		Optional<Cuenta> cu =  cmet.findById(id);
+	@GetMapping("/find/{num}")
+	public Optional<Cuenta> findCuenta(@PathVariable("num") Long num) {
+		Optional<Cuenta> cu =  cmet.findById(num);
 		if (!cu.equals(null)) {
 			return cu;
 		} else {
-            throw new RuntimeException("Cuenta identificada con el ID: "+id+" no encontrado");
+            throw new RuntimeException("Cuenta identificada con el ID: "+num+" no encontrado");
 		}	
 	}
 	
