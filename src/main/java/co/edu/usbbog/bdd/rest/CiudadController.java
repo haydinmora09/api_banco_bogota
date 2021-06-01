@@ -22,62 +22,81 @@ import co.edu.usbbog.bdd.repo.CiudadRepository;
 public class CiudadController {
 
 	@Autowired
-	private CiudadRepository ic;
+	private CiudadRepository cmet;
 	
 
 	@PostMapping("/create")
-	public void insertCiudad(@RequestBody Ciudad c) {
-		ic.save(c);
+	public String insertCiudad(@RequestBody Ciudad c) {	
+		try {
+			if (cmet.existsById(c.getId())) {
+				return "Ya se encuentra registrada la ciudad";
+			} else {
+				cmet.save(c);
+				return "La ciudad se Registro exitosamente";
+			}
+		} catch (IllegalArgumentException e) {
+			return "No se guardo: " + e.getMessage();
+		}
 	}
 	
 	@GetMapping("/all")
-	public List<Ciudad>findAllCiudades() {
-		List<Ciudad> l = ic.findAll();
-		if (l.isEmpty() || l.equals(null)) {
+	public List<Ciudad>buscarCiudades() {
+		List<Ciudad> cm = cmet.findAll();
+		if (cm.isEmpty() || cm.equals(null)) {
 			throw new RuntimeException("No hay ciudades registradas");
 		} else {
-			return l;
-		}
-	}
-	
-	@GetMapping("/find/{id}")
-	public Optional<Ciudad> findCiudad(@PathVariable("id") long id) {
-		Optional<Ciudad> ci =  ic.findById(id);
-		if (!ci.equals(null)) {
-			return ci;
-		} else {
-			throw new RuntimeException("Ciudad identificada con el ID: "+id+" no encontrado");
-		}
-	}
-	
-	@GetMapping("/count")
-	public long coundCiudades() {
-		long c = ic.count();
-		if (c != 0) {
-			return c;
-		} else {
-            throw new RuntimeException("No hay ciudades registradas");
-		}
-	}
-	
-	@DeleteMapping("/delete/{id}")
-	public void deleteCiudad(@PathVariable("id") long id) {
-		Optional<Ciudad> c = ic.findById(id);
-		if (c.equals(null)) {
-            throw new RuntimeException("Ciudad identificada con el ID: "+id+" no encontrado");
-		} else {
-			ic.deleteById(id);
+			return cm;
 		}
 		
 	}
 	
-	@PutMapping("/update")
-	public void updateCiudad(@RequestBody Ciudad c) {
-		Optional<Ciudad> ci = ic.findById(c.getId());
-		if (ci.equals(null)) {
-            throw new RuntimeException("Ciudad identificada con el ID: "+c.getId()+" no encontrado");
+	@GetMapping("/buscarC")
+	public Optional<Ciudad> buscarCiudad(@PathVariable("id") long id) {
+		Optional<Ciudad> cm =  cmet.findById(id);
+		if (!cmet.equals(null)) {
+			return cm;
 		} else {
-			ic.save(c);
+			throw new RuntimeException("Ciudad no encontrada");
+		}
+	}
+	
+	@GetMapping("/count")
+	public long contarCiudades() {
+		long c = cmet.count();
+		try {
+			if (c != 0) {
+				return c;
+		
+			}else {
+				 throw new RuntimeException("No hay ciudades ");
+			}
+		} catch (IllegalArgumentException e) {
+			return c;
+		}
+	}
+			
+	@DeleteMapping("/eliminar")
+	public String eliminarCiudad(@RequestBody Ciudad ciudad) {
+		try {
+			if (cmet.existsById(ciudad.getId())) {
+				cmet.deleteById(ciudad.getId());
+				return "Se ha eliminado correctamente";
+			} else {
+				return "La ciudad no se encuentra registrada";
+			}
+		} catch (IllegalArgumentException e) {
+			return "No se elimino la ciudad: " + e.getMessage();
+		}
+	}
+	@PutMapping("/update")
+	public String updateCiudad(@RequestBody Ciudad c) {
+		Optional<Ciudad> ci = cmet.findById(c.getId());
+		if (ci.equals(null)) {
+            throw new RuntimeException("Ciudad no encontrada");
+		} else {
+			cmet.save(c);
+			return "la ciudad se actualizo";
+
 		}
 		
 	}
