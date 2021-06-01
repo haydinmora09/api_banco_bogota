@@ -1,17 +1,15 @@
 package co.edu.usbbog.bdd.model;
 
 import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
  @Entity
-public class Transaccion {
+public class Auditoria {
 	@Id
 	private long id;
 	@Column
@@ -25,9 +23,12 @@ public class Transaccion {
 	@JoinColumn(name = "cuenta", referencedColumnName = "num", nullable = false)
     @ManyToOne(optional = false)
 	private Cuenta cuenta;
+	@JoinColumn(name = "ciudad", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+	private Ciudad ciudad;
 	
 	
-	public Transaccion(long id, double valor, LocalDateTime fecha) {
+	public Auditoria(long id, double valor, LocalDateTime fecha) {
 		super();
 		this.id = id;
 		this.valor = valor;
@@ -35,53 +36,83 @@ public class Transaccion {
 	}
 	
 	
-	public Transaccion() {
+	public Auditoria() {
 		super();
 		this.id = 0;
 		this.valor = 0.0;
 		this.fecha = null;
 		this.tipo = null;
 		this.cuenta = null;
+		this.ciudad = null;
 	}
+
 
 
 	public long getId() {
 		return id;
 	}
+
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
+
 	public double getValor() {
 		return valor;
 	}
+
+
 	public void setValor(double valor) {
 		this.valor = valor;
 	}
+
+
 	public LocalDateTime getFecha() {
 		return fecha;
 	}
+
+
 	public void setFecha(LocalDateTime fecha) {
 		this.fecha = fecha;
 	}
+
+
 	public TipoTransaccion getTipo() {
 		return tipo;
 	}
+
+
 	public void setTipo(TipoTransaccion tipo) {
 		this.tipo = tipo;
 	}
+
+
 	public Cuenta getCuenta() {
 		return cuenta;
 	}
+
+
 	public void setCuenta(Cuenta cuenta) {
 		this.cuenta = cuenta;
 	}
 
+
+	public Ciudad getCiudad() {
+		return ciudad;
+	}
+
+
+	public void setCiudad(Ciudad ciudad) {
+		this.ciudad = ciudad;
+	}
 
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((ciudad == null) ? 0 : ciudad.hashCode());
 		result = prime * result + ((cuenta == null) ? 0 : cuenta.hashCode());
 		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
@@ -93,7 +124,6 @@ public class Transaccion {
 	}
 
 
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -102,7 +132,12 @@ public class Transaccion {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Transaccion other = (Transaccion) obj;
+		Auditoria other = (Auditoria) obj;
+		if (ciudad == null) {
+			if (other.ciudad != null)
+				return false;
+		} else if (!ciudad.equals(other.ciudad))
+			return false;
 		if (cuenta == null) {
 			if (other.cuenta != null)
 				return false;
@@ -126,11 +161,10 @@ public class Transaccion {
 	}
 
 
-
 	@Override
 	public String toString() {
 		return "Transaccion [id=" + id + ", valor=" + valor + ", fecha=" + fecha + ", tipo=" + tipo.toString() + ", cuenta="
-				+ cuenta.toString() + "]";
+				+ cuenta + ", ciudad=" + ciudad.toString() + "]";
 	}
-	
+
 }
